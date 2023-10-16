@@ -1,5 +1,8 @@
 import re
 import time
+from memory_profiler import profile
+from pylab import plot, show
+import matplotlib.pyplot as plt
 
 def getBuckets(T):
     count = {}
@@ -14,14 +17,14 @@ def getBuckets(T):
 
 def sais(T):
     t = ["_"] * len(T)
-    
+
     t[len(T) - 1] = "S"
     for i in range(len(T) - 1, 0, -1):
         if T[i-1] == T[i]:
             t[i - 1] = t[i]
         else:
             t[i - 1] = "S" if T[i-1] < T[i] else "L"
-    
+
     buckets = getBuckets(T)
 
     count = {}
@@ -85,13 +88,13 @@ def sais(T):
 
     count = {}
     for i in range(len(T)):
-        if SA[i] >= 0:
-            if t[SA[i] - 1] == "L":
-                symbol = T[SA[i] - 1]
-                offset = count.get(symbol, 0)
-                SA[buckets[symbol][0] + offset] = SA[i] - 1
-                count[symbol] = offset + 1
-
+      if SA[i] >= 0:
+        if t[SA[i] - 1] == "L":
+          symbol = T[SA[i] - 1]
+          offset = count.get(symbol, 0)
+          SA[buckets[symbol][0] + offset] = SA[i] - 1
+          count[symbol] = offset + 1
+  
     count = {}
     for i in range(len(T) - 1, 0, -1):
         if SA[i] > 0:
@@ -102,6 +105,7 @@ def sais(T):
 
     return SA
 
+@profile
 def create_suffix_array_from_file(file_path):
     start_time = time.time()  # Registrar el tiempo de inicio
 
@@ -125,5 +129,6 @@ def create_suffix_array_from_file(file_path):
 
 
 
-array = create_suffix_array_from_file('Books/Les Miserables.txt')
-print(array, "array size: ", len(array))
+array = create_suffix_array_from_file('prueba2.txt')
+#print(array, "array size: ", len(array))
+print(len(array))
