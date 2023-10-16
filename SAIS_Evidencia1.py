@@ -1,3 +1,4 @@
+import re
 import time
 
 def getBuckets(T):
@@ -101,24 +102,28 @@ def sais(T):
 
     return SA
 
-def build_suffix_array(filename):
-    with open(filename, 'r') as file:
-        text = file.read()
+def create_suffix_array_from_file(file_path):
+    start_time = time.time()  # Registrar el tiempo de inicio
 
-    T = [ord(c) for c in text]
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
 
-    # Measure execution time
-    start_time = time.time()
+    # Eliminar caracteres especiales y convertir a minúsculas
+    content = re.sub(r'[^a-zA-Z0-9\s]', '', content).lower()
+
+    # Concatenar '$' al final del texto
+    content = content.replace(" ", "").replace("\n", "")
+    content += "$"
+    T = [ord(c) for c in content]
     SA = sais(T)
-    end_time = time.time()
 
+    end_time = time.time()  # Registrar el tiempo de finalización
     execution_time = end_time - start_time
-    return SA, execution_time
+    print(f"Tiempo de ejecución: {execution_time} segundos")
 
-if __name__ == "__main__":
-    filename = "prueba2.txt"  # Replace with the name of your input file
-    SA, execution_time = build_suffix_array(filename)
-    
-    # Print the resulting suffix array and execution time
-    print("Suffix Array:", SA)
-    print("Execution Time:", execution_time, "seconds")
+    return SA
+
+
+
+array = create_suffix_array_from_file('Books/Les Miserables.txt')
+print(array, "array size: ", len(array))
