@@ -1,3 +1,5 @@
+import time
+
 def getBuckets(T):
     count = {}
     buckets = {}
@@ -99,7 +101,24 @@ def sais(T):
 
     return SA
 
-string = "GTCCCGATGTCATGTCAGGA$"
-T = [ord(c) for c in string]
-SA = sais(T)
-print(SA)
+def build_suffix_array(filename):
+    with open(filename, 'r') as file:
+        text = file.read()
+
+    T = [ord(c) for c in text]
+
+    # Measure execution time
+    start_time = time.time()
+    SA = sais(T)
+    end_time = time.time()
+
+    execution_time = end_time - start_time
+    return SA, execution_time
+
+if __name__ == "__main__":
+    filename = "prueba2.txt"  # Replace with the name of your input file
+    SA, execution_time = build_suffix_array(filename)
+    
+    # Print the resulting suffix array and execution time
+    print("Suffix Array:", SA)
+    print("Execution Time:", execution_time, "seconds")
