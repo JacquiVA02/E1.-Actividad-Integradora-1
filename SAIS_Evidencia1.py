@@ -1,6 +1,10 @@
 import re
 import time
 
+from memory_profiler import profile
+from pylab import plot, show
+import matplotlib.pyplot as plt
+
 def getBuckets(T):
    count = {}
    buckets = {}
@@ -20,9 +24,9 @@ def sais(T):
          t[i - 1] = t[i]
       else:
          t[i - 1] = "S" if T[i-1] < T[i] else "L"
-      
+
    buckets = getBuckets(T)
-   
+
    count = {}
    SA = [-1] * len(T)
    LMS = {}
@@ -34,7 +38,7 @@ def sais(T):
          if end is not None:
             LMS[i] = end
          end = i
-         
+
    LMS[len(T) - 1] = len(T) - 1
    count = {}
    for i in range(len(T)):
@@ -62,7 +66,7 @@ def sais(T):
             name += 1
          prev = i
          namesp[SA[i]] = name
-   
+
    names = []
    SApIdx = []
    for i in range(len(T)):
@@ -113,7 +117,7 @@ def search_word_in_suffix_array(word, array, content):
     if not found:
         print(f"Palabra '{word}' no encontrada en el archivo.")
 
-
+@profile
 def create_suffix_array_from_file(file_path):
     start_time = time.time()
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -131,10 +135,9 @@ def create_suffix_array_from_file(file_path):
 
     return SA, content
 
-# Supongamos que deseas buscar la palabra "ejemplo" en el archivo
+# Palabra a buscar
 word_to_search = "phoenix"
-array, content = create_suffix_array_from_file('prueba2.txt')
-search_word_in_suffix_array(word_to_search, array, content)
 
-#array = create_suffix_array_from_file('prueba2.txt')
-#print(array, "array size: ", len(array))
+array, content = create_suffix_array_from_file('prueba2.txt')
+print("array size: ", len(array))
+search_word_in_suffix_array(word_to_search, array, content)
