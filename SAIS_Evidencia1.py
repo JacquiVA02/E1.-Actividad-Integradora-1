@@ -5,6 +5,7 @@ from memory_profiler import profile
 from pylab import plot, show
 import matplotlib.pyplot as plt
 
+
 def getBuckets(T):
    count = {}
    buckets = {}
@@ -16,14 +17,15 @@ def getBuckets(T):
       start += count[c]
    return buckets
 
+
 def sais(T):
    t = ["_"] * len(T)
    t[len(T) - 1] = "S"
    for i in range(len(T) - 1, 0, -1):
-      if T[i-1] == T[i]:
+      if T[i - 1] == T[i]:
          t[i - 1] = t[i]
       else:
-         t[i - 1] = "S" if T[i-1] < T[i] else "L"
+         t[i - 1] = "S" if T[i - 1] < T[i] else "L"
 
    buckets = getBuckets(T)
 
@@ -62,7 +64,8 @@ def sais(T):
    prev = None
    for i in range(len(SA)):
       if t[SA[i]] == "S" and t[SA[i] - 1] == "L":
-         if prev is not None and T[SA[prev]:LMS[SA[prev]]] != T[SA[i]:LMS[SA[i]]]:
+         if prev is not None and T[SA[prev]:LMS[SA[prev]]] != T[
+             SA[i]:LMS[SA[i]]]:
             name += 1
          prev = i
          namesp[SA[i]] = name
@@ -105,39 +108,48 @@ def sais(T):
 
    return SA
 
+
 def search_word_in_suffix_array(word, array, content):
-    found = False
+   found = False
 
-    for i, suffix_start in enumerate(array):
-        suffix = content[suffix_start:]
-        if suffix.startswith(word):
-            found = True
-            print(f"Palabra encontrada en el índice {suffix_start} (Ocurrencia {i + 1})")
+   for i, suffix_start in enumerate(array):
+      suffix = content[suffix_start:]
+      if suffix.startswith(word):
+         found = True
+         print(
+             f"Palabra encontrada en el índice {suffix_start} (Ocurrencia {i + 1})"
+         )
 
-    if not found:
-        print(f"Palabra '{word}' no encontrada en el archivo.")
+   if not found:
+      print(f"Palabra '{word}' no encontrada en el archivo.")
+
 
 @profile
 def create_suffix_array_from_file(file_path):
-    start_time = time.time()
-    with open(file_path, 'r', encoding='utf-8') as file:
-        content = file.read()
+   start_time = time.time()
+   with open(file_path, 'r', encoding='utf-8') as file:
+      content = file.read()
 
-    content = re.sub(r'[^a-zA-Z0-9\s]', '', content).lower()
-    content = content.replace(" ", "").replace("\n", "")
-    content += "$"
-    T = [ord(c) for c in content]
-    SA = sais(T)
+   content = re.sub(r'[^a-zA-Z0-9\s]', '', content).lower()
+   content = content.replace(" ", "").replace("\n", "")
+   content += "$"
+   T = [ord(c) for c in content]
+   SA = sais(T)
 
-    end_time = time.time()
-    execution_time = end_time - start_time
-    print(f"Tiempo de ejecución: {execution_time} segundos")
+   end_time = time.time()
+   execution_time = end_time - start_time
+   print(f"Tiempo de ejecución: {execution_time} segundos")
 
-    return SA, content
+   return SA, content
+
 
 # Palabra a buscar
-word_to_search = "phoenix"
+word_to_search = "under"
 
-array, content = create_suffix_array_from_file('prueba2.txt')
+array, content = create_suffix_array_from_file(
+    'Libros/Pinocchio under the sea.txt')
 print("array size: ", len(array))
 search_word_in_suffix_array(word_to_search, array, content)
+
+#En caso de que se desee imprimir el arreglo de sufijos:
+#print(array)
